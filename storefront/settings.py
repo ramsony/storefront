@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'playground',
     'store',
-    'tags'
+    'tags',
+    'likes'
 ]
 
 
