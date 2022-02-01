@@ -79,6 +79,7 @@ class OrderItem(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, default='1916 Saginaw DR')
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE)
 
