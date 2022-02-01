@@ -8,8 +8,17 @@ from django.db import models
 # Create your models here.
 
 
-class Collection(models.Models):
+class Promotion(models.Model):
+    description = models.CharField(max_length=255)
+    discount = models.FloatField()
+
+
+class Collection(models.Model):
     title = models.CharField(max_length=255)
+    feature_product = models.ForeignKey(
+        # put the class in quotes resolve circular relationship
+        # use the + sign on related_name to tell django not make a reverse relationship
+        'Product', on_delete=models.SET_NULL, null=True, related_name='+')
 
 
 class Product(models.Model):
@@ -18,7 +27,10 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
+    # one to many relationship
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    # many to many relationship
+    promotions = models.ManyToManyField(Promotion)
 
 
 class Customer(models.Model):
@@ -66,8 +78,8 @@ class OrderItem(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    customer = models.OneToOneField(
-        Customer, on_delete=models.CASCADE, primary_key=True)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE)
 
 
 class Cart(models.Model):
